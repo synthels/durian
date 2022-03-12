@@ -2,8 +2,6 @@
 
 #include <stdbool.h>
 
-#define DEFAULT_INTEGRITY_BUF_SIZE 5000
-
 typedef void *(*durian_malloc)(size_t);
 typedef void (*durian_free)(void *);
 

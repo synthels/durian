@@ -9,6 +9,8 @@
 #include "durian.h"
 #include "log.h"
 
+#define DEFAULT_INTEGRITY_BUF_SIZE 5000
+
 #define UP(x) x ? x : 8
 #define RAND_IN_RANGE(low, high) rand() % (high + 1 - low) + low
 
