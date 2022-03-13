@@ -93,14 +93,14 @@ int main(int argc, char **argv)
     char *file = NULL;
     struct queue *q = queue_get();
     struct flags f;
-    while ((ch = getopt_long(argc, argv, "l:hbi::f:", args, NULL)) != -1) {
+    while ((ch = getopt_long(argc, argv, "l:hbf:i::", args, NULL)) != -1) {
         switch (ch) {
             case 'l':
                 library = optarg;
                 break;
             case 'i':
                 add_function_if_not_already_in(q, heap_integrity_check);
-                f.buf_size = optarg ? atoi(optarg) : DEFAULT_INTEGRITY_BUF_SIZE;
+                f.buf_size = optarg ? atoll(optarg) : DEFAULT_INTEGRITY_BUF_SIZE;
                 break;
             case 'b':
                 add_function_if_not_already_in(q, malloc_benchmark);
@@ -136,13 +136,15 @@ int main(int argc, char **argv)
             free_queue(q);
             return 1;
         }
+    } else {
+        pr_log("No library specified, defaulting to malloc/free.\n");
     }
 
     /* Redirect stdout, if requested */
     bool is_stdout = true;
     if (file) {
         /* NOTE: if I'm not mistaken, you don't have to close freopen'd stdout... */
-        freopen(file, "a+", stdout);
+        freopen(file, "wa+", stdout);
         is_stdout = false;
     }
 

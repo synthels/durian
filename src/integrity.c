@@ -23,10 +23,11 @@ struct result *heap_integrity_check(durian_malloc umalloc, durian_free ufree, st
 
     /* Fill buffer with random bytes,
        only occasionally poisoning with guard values */
+    pr_log("Starting heap integrity check... (testing for %lluB)\n", f->buf_size * 64);
     unsigned int j = 0;
     int psn_modulo = RAND_IN_RANGE(2, 3);
     unsigned int *guards = malloc((f->buf_size / psn_modulo) * sizeof(unsigned int) + 1);
-    for (unsigned int i = 0; i < f->buf_size; i++) {
+    for (uint64_t i = 0; i < f->buf_size; i++) {
         buf[i] = umalloc(sizeof(uint64_t));
         if (i % psn_modulo == 0) {
             /* Plant guard value */
@@ -40,7 +41,7 @@ struct result *heap_integrity_check(durian_malloc umalloc, durian_free ufree, st
     /* Now let's check if our buffer is intact! */
     uint64_t poison;
     bitwise_copy(GUARD_VALUE, &poison);
-    for (unsigned int i = 0; i < j; i++) {
+    for (uint64_t i = 0; i < j; i++) {
         const uint64_t val = *buf[guards[i]];
         if (val != poison) {
             /* The heap is smashed... */
@@ -53,7 +54,7 @@ struct result *heap_integrity_check(durian_malloc umalloc, durian_free ufree, st
         }
     }
 
-    for (unsigned int i = 0; i < f->buf_size; i++) {
+    for (uint64_t i = 0; i < f->buf_size; i++) {
         ufree(buf[i]);
     }
 

@@ -15,7 +15,7 @@ void pr_log(const char *format, ...)
     va_list arg;
     va_start(arg, format);
     vsprintf(buf, format, arg);
-    printf("%s: %s", tm_buf, buf);
+    printf("[%s] durian: %s", tm_buf, buf);
     va_end(arg);
     free(buf);
 }

@@ -1,12 +1,13 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stdint.h>
 
 typedef void *(*durian_malloc)(size_t);
 typedef void (*durian_free)(void *);
 
 struct flags {
-    size_t buf_size;
+    uint64_t buf_size;
 };
 
 struct result {
